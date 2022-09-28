@@ -11,6 +11,8 @@ tags:
     description: Sea Level Projection API
   - name: Analytics
     description: Data Analytics API
+  - name: Indicators
+    description: Sea Level Indicators API
 paths:
   '/edge/ws/search/projection':
     get:
@@ -80,6 +82,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TideGaugeResponse'
+  '/edge/ws/indicator/dataset':
+    get:
+      summary: Get key indicators data
+      tags:
+        - Indicators
+      parameters:
+        - name: id
+          description: name of key indicator
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - Antarctica_Mass_Variation
+              - Global_Mean_Sea_Level
+              - Greenland_Mass_Variation
+              - Ocean_Mass
+              - Steric_Height
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndicatorResponse'
 components:
   schemas:
     ProjectionResponse:
@@ -143,3 +170,74 @@ components:
           type: object
         properties:
           type: object
+    IndicatorResponse:
+      type: object
+      properties:
+        start:
+          type: number
+        numFound:
+          type: number
+        docs:
+          type: array
+          items:
+            type: object
+            properties:
+              yMarginMax:
+                type: array
+                items:
+                  type: number
+              x-label:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+              rate:
+                type: number
+              xMax:
+                type: number
+              id:
+                type: string
+              unit:
+                type: string
+              y-label:
+                type: string
+              uncertainties:
+                type: number
+              yMax:
+                type: number
+              xMin:
+                type: number
+              _version_:
+                type: number
+              yMin:
+                type: number
+              sourceUrl:
+                type: array
+                items:
+                  type: string
+              sourceType:
+                type: array
+                items:
+                  type: string
+              xLatest:
+                type: number
+              abbrUnit:
+                type: string
+              shortenUnit:
+                type: string
+              name:
+                type: string
+              yMarginMin:
+                type: array
+                items:
+                  type: number
+              y:
+                type: array
+                items:
+                  type: number
+              x:
+                type: array
+                items:
+                  type: number
+              yLatest:
+                type: number
