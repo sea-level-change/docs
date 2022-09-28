@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  description: Data analytics services relevant to sea level change
+  version: 0.0.1
+  title: Sea Level Change Data Analytics
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+tags:
+  - name: Projection
+    description: Sea Level Projection API
+  - name: Analytics
+    description: Data Analytics API
+paths:
+  '/edge/ws/search/projection':
+    get:
+      summary: Get sea level projection data
+      tags:
+        - Projection
+      parameters:
+        - name: psmsl_id
+          description: PSMSL ID of tide gauge
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: lat
+          description: latitude
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: lon
+          description: longitude
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: process
+          description: process
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: confidence
+          description: confidence
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: scenario
+          description: scenario
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectionResponse'
+components:
+  schemas:
+    ProjectionResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ProjectionData'
+    ProjectionData:
+      type: object
+      properties:
+        psmsl_id:
+          type: number
+        type:
+          type: string
+        process:
+          type: string
+        confidence:
+          type: string
+        scenario:
+          type: string
+        year:
+          type: array
+          items:
+            type: number
+        height_5:
+          type: array
+          items:
+            type: number
+        height_17:
+          type: array
+          items:
+            type: number
+        height_50:
+          type: array
+          items:
+            type: number
+        height_83:
+          type: array
+          items:
+            type: number
+        height_95:
+          type: array
+          items:
+            type: number
+
