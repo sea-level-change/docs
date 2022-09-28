@@ -61,6 +61,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProjectionResponse'
+  '/edge/ws/search/tidegauge':
+    get:
+      summary: Get tide gauge data
+      tags:
+        - Projection
+      parameters:
+        - name: psmsl_id
+          description: PSMSL ID of tide gauge
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TideGaugeResponse'
 components:
   schemas:
     ProjectionResponse:
@@ -104,4 +123,23 @@ components:
           type: array
           items:
             type: number
-
+    TideGaugeResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          default: FeatureCollection
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/TideGaugeData'
+    TideGaugeData:
+      type: object
+      properties:
+        type:
+          type: string
+          default: Feature
+        geometry:
+          type: object
+        properties:
+          type: object
