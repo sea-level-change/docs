@@ -26,6 +26,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: eez_id
+          description: Exclusive Economic Zone ID
+          in: query
+          required: false
+          schema:
+            type: string
         - name: lat
           description: latitude
           in: query
