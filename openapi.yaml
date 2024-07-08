@@ -113,6 +113,83 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IndicatorResponse'
+  '/edge/ws/search/sealevelgov':
+    get:
+      summary: Get past, present and future sea level rise and impacts for the coastal United States
+      tags:
+        - SeaLevelGov
+      parameters:
+        - name: psmsl_id
+          description: PSMSL ID of tide gauge
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: state
+          description: state abbreviation
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - AK
+              - AL
+              - CA
+              - CT
+              - DC
+              - DE
+              - FL
+              - GA
+              - HI
+              - LA
+              - MA
+              - MD
+              - ME
+              - MS
+              - NC
+              - NH
+              - NJ
+              - NY
+              - OR
+              - PA
+              - PI
+              - PR
+              - RI
+              - SC
+              - TX
+              - VA
+              - VI
+              - WA
+        - name: region
+          description: region abbreviation
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - EC
+              - SE
+              - GCE
+              - GCW
+              - SWC
+              - NWC
+              - PAC
+              - CAR
+              - ALS
+              - USA
+        - name: subset
+          description: Only applicable if psmsl_id is provided. If true, return only values applicable for map click, otherwise, if false, return all available data.
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeaLevelGovResponse'
 components:
   schemas:
     ProjectionResponse:
@@ -247,3 +324,237 @@ components:
                   type: number
               yLatest:
                 type: number
+    SeaLevelGovResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          default: FeatureCollection
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeaLevelGovData'
+    SeaLevelGovData:
+      type: object
+      properties:
+        type:
+          type: string
+          default: Feature
+        properties:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - tide_gauge
+                - state
+                - regional
+            region:
+              type: string
+            state:
+              type: string
+            rel_sl_change:
+              type: number
+            summary:
+              type: string
+            distribution_year:
+              type: array
+              items:
+                type: integer
+                format: int32
+            distribution_minor_flood_threshold:
+              type: number
+            distribution_moderate_flood_threshold:
+              type: number
+            distribution_major_flood_threshold:
+              type: number
+            distribution:
+              type: array
+              items:
+                type: number
+            distribution_sea_level_heights:
+              type: array
+              items:
+                type: number
+            tide_gauge_trajectory_uncorrected:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                y:
+                  type: array
+                  items:
+                    type: number
+            tide_gauge_trajectory_corrected:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                y:
+                  type: array
+                  items:
+                    type: number
+            tide_gauge_annual_time_series:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: number
+                y:
+                  type: array
+                  items:
+                    type: number
+                y_corrected:
+                  type: array
+                  items:
+                    type: number
+            tide_gauge_time_series:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                y:
+                  type: array
+                  items:
+                    type: number
+                y_adjusted_monthly:
+                  type: array
+                  items:
+                    type: number
+            tide_gauge_detrended:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                y:
+                  type: array
+                  items:
+                    type: number
+            tide_gauge_rates_uncorrected:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                y:
+                  type: array
+                  items:
+                    type: number
+            tide_gauge_rates_corrected:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                y:
+                  type: array
+                  items:
+                    type: number
+            altimetry_time_series:
+              type: object
+              properties:
+                x:
+                  type: array
+                  items:
+                    type: number
+                y:
+                  type: array
+                  items:
+                    type: number
+            vlm_percentage:
+              type: number
+            vlm_trend:
+              type: number
+            sterodynamic_percentage:
+              type: number
+            sterodynamic_trend:
+              type: number
+            antarctica_percentage:
+              type: number
+            antarctica_trend:
+              type: number
+            greenland_percentage:
+              type: number
+            greenland_trend:
+              type: number
+            glacier_percentage:
+              type: number
+            glacier_trend:
+              type: number
+            tws_percentage:
+              type: number
+            tws_trend:
+              type: number
+            htf:
+              type: object
+              properties:
+                year:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                major_htf_days:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                minor_htf_days:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                moderate_htf_days:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+            htf_projection:
+              type: object
+              properties:
+                year:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                low:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                int_low:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                int:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                int_high:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+                high:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
